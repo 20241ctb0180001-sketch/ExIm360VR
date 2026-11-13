@@ -20,9 +20,9 @@ public class PlayerControlerVR : MonoBehaviour
 
     [Header("Camera Settings")]
     [SerializeField] private Camera mainCamera;
-    // [SerializeField] private float LookSens = 0.2f;
-    // [SerializeField] private float LookAngLimit = 90f;
-    // private float lookAngle = 0.0f;
+    [SerializeField] private float LookSens = 0.2f;
+     [SerializeField] private float LookAngLimit = 90f;
+     private float lookAngle = 0.0f;
 
     private InputAction moveInput;
     private InputAction runInput;
@@ -58,7 +58,7 @@ public class PlayerControlerVR : MonoBehaviour
         HandleMovement(moveVec);
 
         Vector2 lookVec = lookinput.ReadValue<Vector2>();
-        //HandleCam(lookVec);
+        HandleCam(lookVec);
     }
 
     private void HandleMovement(Vector2 moveVec)
@@ -108,11 +108,11 @@ public class PlayerControlerVR : MonoBehaviour
         anim.SetBool("JumpRq", JumpRequest);
     }
 
-    /*private void HandleCam(Vector2 lookVec)
+    private void HandleCam(Vector2 lookVec)
     {
         lookAngle += -lookVec.y * LookSens;
         lookAngle = Mathf.Clamp(lookAngle, -LookAngLimit, LookAngLimit);
         mainCamera.transform.localRotation = Quaternion.Euler(lookAngle, 0, 0);
         transform.rotation *= Quaternion.Euler(0, lookVec.x * LookSens, 0);
-    }*/
+    }
 }
