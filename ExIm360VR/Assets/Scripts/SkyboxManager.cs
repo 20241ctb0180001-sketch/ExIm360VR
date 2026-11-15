@@ -4,7 +4,7 @@ public class SkyboxManager : MonoBehaviour
     public Material videoMaterial;
     public GameObject [] objetosParaEsconder;
     private Material DefaultSkybox;
-    private bool IsSBDefault = false;
+    [SerializeField] private bool IsSBDefault = true;
     public ParticleSystem particle;
 
     void Start(){
@@ -12,10 +12,11 @@ public class SkyboxManager : MonoBehaviour
     }
 
     public void AlternaSkybox(){
-        particle.Play();
         if(IsSBDefault){
+            particle.Play();
             ConfigSB(videoMaterial, false);
         }else{
+            particle.Play();
             ConfigSB(DefaultSkybox, true);
         }
         IsSBDefault = !IsSBDefault;
@@ -27,5 +28,4 @@ public class SkyboxManager : MonoBehaviour
             item.SetActive(isActive);
         }
     }
-
 }

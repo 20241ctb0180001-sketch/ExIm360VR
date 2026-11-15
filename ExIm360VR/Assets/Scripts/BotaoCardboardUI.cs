@@ -8,15 +8,27 @@ public class BotaoCardboardUI : MonoBehaviour
     public Image imagemDoBotao;
     public Color corNormal = Color.white;
     public Color corAoOlhar = Color.cyan;
-
     private Vector3 escalaOriginal;
     private bool estaOlhando = false;
     private Button botaoUnity;
-
-    void Start()
+    //public InputActionAsset inputAction;
+    private InputAction Select;
+    public bool clikb = false;
+    public AudioSource AudmanMusic;
+    public AudioSource AudmanEffects;
+    public AudioClip startaud;
+    public AudioClip stopaud;
+    public AudioClip MusicSpace;
+    
+    
+    void Awake()
     {
         escalaOriginal = transform.localScale;
         botaoUnity = GetComponent<Button>();
+        Select = InputSystem.actions.FindAction("Interact");
+
+        AudmanMusic.loop = true;
+        AudmanMusic.Play();
 
         if (imagemDoBotao == null)
             imagemDoBotao = GetComponent<Image>();
@@ -29,19 +41,24 @@ public class BotaoCardboardUI : MonoBehaviour
     {
         if (!estaOlhando) return;
 
-        // Verifica clique do botão esquerdo do mouse (Editor / PC)
-        bool clicouMouse = Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame;
-
-        // Verifica toque na tela (Celular Android / iOS)
-        bool tocouTela = Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame;
-
-        if (clicouMouse || tocouTela)
+        if(Select != null && Select.WasPressedThisFrame())
         {
             OnPointerClick();
+
+            clikb = !clikb;
+            AudmanMusic.clip = MusicSpace;
+            
+            if(clikb == true){
+                AudmanEffects.PlayOneShot(startaud);
+                AudmanMusic.Play();
+            }
+            else{
+                AudmanEffects.PlayOneShot(stopaud);
+                AudmanMusic.Stop();
+            }
         }
     }
 
-    // Chamado automaticamente pelo CardboardReticlePointer quando o retículo entra
     public void OnPointerEnter()
     {
         estaOlhando = true;
@@ -50,7 +67,6 @@ public class BotaoCardboardUI : MonoBehaviour
             imagemDoBotao.color = corAoOlhar;
     }
 
-    // Chamado automaticamente pelo CardboardReticlePointer quando o retículo sai
     public void OnPointerExit()
     {
         estaOlhando = false;
@@ -59,12 +75,8 @@ public class BotaoCardboardUI : MonoBehaviour
             imagemDoBotao.color = corNormal;
     }
 
-    // Chamado pelo Cardboard no celular ou pelo clique do mouse no Update acima
     public void OnPointerClick()
     {
-        Debug.Log("Botão clicado: " + gameObject.name);
-
-        // Executa o que estiver configurado no "On Click ()" do componente Button!
         if (botaoUnity != null)
         {
             botaoUnity.onClick.Invoke();
