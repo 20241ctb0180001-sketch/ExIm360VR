@@ -19,12 +19,6 @@ public class objectMover : MonoBehaviour
 
     private void Start()
     {
-        if (centro == null)
-        {
-            Debug.LogError("Atribua o centro da órbita no Inspector.", this);
-            return;
-        }
-
         Vector3 offset = transform.position - centro.position;
         angulo = Mathf.Atan2(offset.z, offset.x);
         raio = Mathf.Sqrt(offset.x * offset.x + offset.z * offset.z);
@@ -46,12 +40,7 @@ public class objectMover : MonoBehaviour
             target = level * strength;
         }
 
-        smoothLevel = Mathf.SmoothDamp(
-            smoothLevel,
-            target,
-            ref smoothVelocity,
-            smoothTime
-        );
+        smoothLevel = Mathf.SmoothDamp(smoothLevel, target, ref smoothVelocity, smoothTime);
 
         if (centro == null) return;
 
@@ -60,10 +49,6 @@ public class objectMover : MonoBehaviour
         float x = Mathf.Cos(angulo) * raio;
         float z = Mathf.Sin(angulo) * raio;
 
-        transform.position = new Vector3(
-            centro.position.x + x,
-            centro.position.y + alturaInicial + smoothLevel,
-            centro.position.z + z
-        );
+        transform.position = new Vector3(centro.position.x + x, centro.position.y + alturaInicial + smoothLevel, centro.position.z + z);
     }
 }

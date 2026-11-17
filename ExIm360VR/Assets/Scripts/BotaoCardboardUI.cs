@@ -10,7 +10,7 @@ public class BotaoCardboardUI : MonoBehaviour
     public Color corAoOlhar = Color.cyan;
     private Vector3 escalaOriginal;
     private bool estaOlhando = false;
-    private Button botaoUnity;
+    [SerializeField] private Button botaoUnity;
     //public InputActionAsset inputAction;
     private InputAction Select;
     public bool clikb = false;
@@ -24,8 +24,8 @@ public class BotaoCardboardUI : MonoBehaviour
     void Awake()
     {
         escalaOriginal = transform.localScale;
-        botaoUnity = GetComponent<Button>();
-        Select = InputSystem.actions.FindAction("Interact");
+        //botaoUnity = GetComponent<Button>();
+        Select = InputSystem.actions.FindAction("Attack");
 
         AudmanMusic.loop = true;
         AudmanMusic.Play();
